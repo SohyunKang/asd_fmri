@@ -1,0 +1,46 @@
+# config.yaml
+experiment:
+  name: experiment_mlp
+  save_dir: ./outputs
+  seed: 42
+  fold_num: 4
+  
+
+device: "cpu"   # "cuda" or "cpu"
+
+data:
+  dataset_name: 
+  csv_path: ./data/abide_subjects_fc_with_demo.csv
+  fixed_cols: ["SEX", "AGE_AT_SCAN", "Site"]   # 항상 포함
+  feature_prefixes: ["ROI"]              # 여러 prefix 자동 처리
+  extra_cols: []          # 추가 feature
+  label_col: "Label"
+  batch_size: 16
+  num_workers: 1
+  train_ratio: 0.8
+
+model:
+  name: mlp   # Options: mlp
+  num_layers: 4
+  input_dim: None
+  output_dim: None
+
+training:
+  epochs: 20
+  lr: 0.0001
+  optimizer: adam   # Options: adam | adamw | sgd
+  weight_decay: 0.00001
+  scheduler:
+    type: steplr
+    step_size: 10
+    gamma: 0.1
+  loss: ce     # Options: ce | dice | dice_bce | focal
+
+logging:
+  log_interval: 10
+  save_checkpoint: true
+  checkpoint_dir: ./checkpoints
+
+test:
+  save_predictions: true
+  save_dir: ./outputs/
